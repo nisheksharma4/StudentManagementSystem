@@ -3,6 +3,7 @@ package com.nsdev.studentmanagement.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -109,4 +110,16 @@ public class StudentController {
 		return ResponseEntity.ok(rs);
 	}
 	
+	@GetMapping("/page")
+	public ResponseEntity<ResponseStructure<Page<Student>>> getAllStudent(@RequestParam int page, @RequestParam int size) {
+		Page<Student> allStudent = studentService.getAllStudent(page, size);
+		
+		ResponseStructure<Page<Student>> rs = new ResponseStructure<>();
+		rs.setStatus(HttpStatus.OK.value());
+		rs.setMessage("Student fetch Successfully");
+		rs.setData(allStudent);
+		
+		return ResponseEntity.ok(rs);
+	}
+		
 }

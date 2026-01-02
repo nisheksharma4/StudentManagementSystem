@@ -3,6 +3,8 @@ package com.nsdev.studentmanagement.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.nsdev.studentmanagement.exception.StudentAlreadyExistsException;
@@ -90,6 +92,11 @@ public class StudentService {
 		 }
 		 
 		 return students;
+	}
+	
+	public Page<Student> getAllStudent(int page, int size) {
+		PageRequest pageRequest = PageRequest.of(page, size);
+		return studentRepo.findAll(pageRequest);
 	}
 
 	
