@@ -121,5 +121,23 @@ public class StudentController {
 		
 		return ResponseEntity.ok(rs);
 	}
-		
+	
+	@GetMapping("/page-sort")
+	public ResponseEntity<ResponseStructure<Page<Student>>> getStudentsWithPaginationAndSorting(
+	        @RequestParam int page,
+	        @RequestParam int size,
+	        @RequestParam String sortBy,
+	        @RequestParam String direction) {
+
+	    Page<Student> students =
+	            studentService.getStudentsWithPaginationAndSorting(page, size, sortBy, direction);
+
+	    ResponseStructure<Page<Student>> rs = new ResponseStructure<>();
+	    rs.setStatus(HttpStatus.OK.value());
+	    rs.setMessage("Students fetched with pagination and sorting");
+	    rs.setData(students);
+
+	    return ResponseEntity.ok(rs);
+	}
+
 }

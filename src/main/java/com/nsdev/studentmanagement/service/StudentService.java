@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 
 import com.nsdev.studentmanagement.exception.StudentAlreadyExistsException;
@@ -98,6 +101,15 @@ public class StudentService {
 		PageRequest pageRequest = PageRequest.of(page, size);
 		return studentRepo.findAll(pageRequest);
 	}
+	
+	public Page<Student> getStudentsWithPaginationAndSorting(int page, int size, String sortBy, String direction) {
+	    Sort sort = direction.equalsIgnoreCase("desc")
+	            ? Sort.by(sortBy).descending()
+	            : Sort.by(sortBy).ascending();
+	    Pageable pageable = PageRequest.of(page, size, sort);
+	    return studentRepo.findAll(pageable);
+	}
+
 
 	
 }
