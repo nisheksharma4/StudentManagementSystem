@@ -1,5 +1,6 @@
 package com.nsdev.studentmanagement.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -74,6 +75,21 @@ public class StudentService {
 		
 		student.setEmail(email);
 		return studentRepo.save(student);
+	}
+	
+	public Student getStudentByIdAndLastName(int id, String lastName) {
+		return studentRepo.findByIdAndLastName(id, lastName)
+				.orElseThrow(() -> new StudentNotFoundException("Student with id "+id+ " and lastname "+lastName+" not found."));
+	}
+	
+	public List<Student> getStudentByLastName(String lastName) {
+		 List<Student> students = studentRepo.findByLastName(lastName);
+		 
+		 if(students.isEmpty()) {
+			 throw new StudentNotFoundException("Student with Last Name "+lastName+" not found!");
+		 }
+		 
+		 return students;
 	}
 
 	

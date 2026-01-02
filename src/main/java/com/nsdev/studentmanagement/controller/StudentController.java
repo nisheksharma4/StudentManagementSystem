@@ -1,5 +1,6 @@
 package com.nsdev.studentmanagement.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nsdev.studentmanagement.model.Student;
@@ -84,6 +86,27 @@ public class StudentController {
 		}
 		Student updateStudentEmail = studentService.updateStudentEmail(id, email);
 		return ResponseEntity.ok(updateStudentEmail);
+	}
+	
+	@GetMapping
+	public ResponseEntity<ResponseStructure<Student>> studentById(@RequestParam int id, @RequestParam String lastname) {
+		Student studentById = studentService.getStudentByIdAndLastName(id, lastname);
+		ResponseStructure<Student> rs = new ResponseStructure<>();
+		rs.setStatus(HttpStatus.OK.value());
+		rs.setMessage("Student with id "+id+" and lastname "+lastname+" found.");
+		rs.setData(studentById);
+		return ResponseEntity.status(HttpStatus.OK).body(rs);
+	}
+	
+	@GetMapping("/lname")
+	public ResponseEntity<ResponseStructure<List<Student>>> getStudentByLastName(@RequestParam String lastName) {
+		List<Student> students= studentService.getStudentByLastName(lastName);
+		
+		ResponseStructure<List<Student>> rs = new ResponseStructure<>();
+		rs.setStatus(HttpStatus.OK.value());
+		rs.setMessage(students.size()+" student records found with "+lastName+".");
+		rs.setData(students);
+		return ResponseEntity.ok(rs);
 	}
 	
 }

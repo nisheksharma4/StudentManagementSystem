@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ResponseStructure<Student>> handleStudentNotFound(StudentNotFoundException ex) {
 		ResponseStructure<Student> rs = new ResponseStructure<>();
 		rs.setStatus(HttpStatus.NOT_FOUND.value());
-		rs.setMessage(ex.getMessage());
+		rs.setMessage(ex.getMessage()); // retrieves the message passed to super(message) in the exception constructor (inherited from Throwable)
 		rs.setData(null);
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(rs);
