@@ -111,13 +111,14 @@ public class StudentController {
 	}
 	
 	@GetMapping("/page")
-	public ResponseEntity<ResponseStructure<Page<Student>>> getAllStudent(@RequestParam int page, @RequestParam int size) {
+	public ResponseEntity<ResponseStructure<List<Student>>> getAllStudent(@RequestParam int page, @RequestParam int size) {
 		Page<Student> allStudent = studentService.getAllStudent(page, size);
+		List<Student> ls = allStudent.getContent();
 		
-		ResponseStructure<Page<Student>> rs = new ResponseStructure<>();
+		ResponseStructure<List<Student>> rs = new ResponseStructure<>();
 		rs.setStatus(HttpStatus.OK.value());
 		rs.setMessage("Student fetch Successfully");
-		rs.setData(allStudent);
+		rs.setData(ls);
 		
 		return ResponseEntity.ok(rs);
 	}
