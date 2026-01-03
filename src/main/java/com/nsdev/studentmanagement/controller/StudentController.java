@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -139,6 +140,30 @@ public class StudentController {
 	    rs.setData(students);
 
 	    return ResponseEntity.ok(rs);
+	}
+	
+	@GetMapping("/courseid/{courseid}")
+	public ResponseEntity<ResponseStructure<List<Student>>> getStudentsByCourseId(@PathVariable int courseid) {
+		List<Student> studentByCourseId = studentService.getStudentByCourseId(courseid);
+		String courseName = studentByCourseId.get(0).getCourse().getCourseName();
+		ResponseStructure<List<Student>> rs = new ResponseStructure<>();
+		rs.setStatus(HttpStatus.OK.value());
+		rs.setMessage("Student with course id and course name :- "+courseid+" : " +courseName+ " found.");
+		rs.setData(studentByCourseId);
+		
+		return ResponseEntity.ok(rs);
+	}
+	
+	@GetMapping("/courseIdPage/{courseid}")
+	public ResponseEntity<ResponseStructure<Page<Student>>> getStudentByCourseIdAndPag(@PathVariable int courseid, @RequestParam int page, @RequestParam int size) {
+		
+		Page<Student> students = studentService.getStudentsByCourseId(courseid, page, size);
+		
+		ResponseStructure<Page<Student>> rs = new ResponseStructure<>();
+		rs.setStatus(HttpStatus.OK.value());
+		rs.setMessage("Student found in page with courseid: "+courseid);
+		rs.setData(students);
+		return ResponseEntity.ok(rs);
 	}
 
 }

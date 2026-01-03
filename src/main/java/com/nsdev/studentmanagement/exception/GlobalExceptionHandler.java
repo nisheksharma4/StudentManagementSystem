@@ -31,4 +31,15 @@ public class GlobalExceptionHandler {
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(rs);
 	}
+	
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<ResponseStructure<Student>> handleEntityNotFoundException(EntityNotFoundException ex) {
+		ResponseStructure<Student> rs = new ResponseStructure<>();
+		rs.setStatus(HttpStatus.NOT_FOUND.value());
+		rs.setMessage(ex.getMessage()); // retrieves the message passed to super(message) in the exception constructor (inherited from Throwable)
+		rs.setData(null);
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(rs);
+	}
+	
 }

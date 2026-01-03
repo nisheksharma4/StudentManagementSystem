@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.nsdev.studentmanagement.model.Student;
 
@@ -22,6 +24,10 @@ public interface StudentRepo extends JpaRepository<Student, Integer> {
 	 
 	 //pagination
 	 Page<Student> findAll(Pageable pageable);
-
-
+	 
+	 
+	 List<Student> findByCourseId(int courseid);
+	 
+	 
+	 Page<Student> findByCourseId(@Param("courseid") int courseId, Pageable pageable);
 }

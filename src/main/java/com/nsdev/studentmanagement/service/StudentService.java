@@ -10,20 +10,24 @@ import org.springframework.data.domain.Pageable;
 
 import org.springframework.stereotype.Service;
 
+import com.nsdev.studentmanagement.exception.EntityNotFoundException;
 import com.nsdev.studentmanagement.exception.StudentAlreadyExistsException;
 import com.nsdev.studentmanagement.exception.StudentNotFoundException;
 import com.nsdev.studentmanagement.model.Student;
+import com.nsdev.studentmanagement.repository.CourseRepo;
 import com.nsdev.studentmanagement.repository.StudentRepo;
 
 @Service
 public class StudentService {
 
 	private StudentRepo studentRepo;
+	private CourseRepo courseRepo;
 	
 	
 	//constructor Dependency injection
-	public StudentService(StudentRepo studentRepo) {
+	public StudentService(StudentRepo studentRepo, CourseRepo courseRepo) {
 		this.studentRepo = studentRepo;
+		this.courseRepo = courseRepo;
 	}
 	
 	public Student saveStudent(Student student) {
@@ -108,6 +112,20 @@ public class StudentService {
 	            : Sort.by(sortBy).ascending();
 	    Pageable pageable = PageRequest.of(page, size, sort);
 	    return studentRepo.findAll(pageable);
+	}
+	
+	public List<Student> getStudentByCourseId(int id){
+		return studentRepo.findByCourseId(id);
+	}
+	
+	public Page<Student> getStudentsByCourseId(int courseId, int page, int size) {
+		
+	    
+	    if (!courseRepo.existsById(courseId)) {
+	        throw new EntityNotFoundException("Course ID " + courseId + " not found");
+	    }
+	    PageRequest pr = PageRequest.of(page, size);
+	    return studentRepo.findByCourseId(courseId, pr);
 	}
 
 
