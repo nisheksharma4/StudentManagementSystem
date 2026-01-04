@@ -1,8 +1,8 @@
 ---
 
-## 📘 Project Progress – Student Management System
+## Project Progress – Student Management System
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 * **Backend:** Spring Boot
 * **Database:** PostgreSQL
@@ -11,7 +11,7 @@
   (**Controller → Service → Repository → Entity**)
   **evolved into DTO-based layered flow**
 
-### 🔄 Updated Architecture Flow
+### Updated Architecture Flow
 
 ```
 Client
@@ -38,7 +38,7 @@ Client
 
 ---
 
-### 📅 **31st December 2025 (00:00 hours – Midnight)**
+### **31st December 2025 (00:00 hours – Midnight)**
 
 I started working on the **Student Management System** project using **Spring Boot**, **PostgreSQL**, and **Postman**.
 
@@ -55,7 +55,7 @@ I started working on the **Student Management System** project using **Spring Bo
 
 ---
 
-### 📅 **1st January 2026**
+### **1st January 2026**
 
 Focused on understanding **Spring Boot response handling**, exception management, and improving API structure.
 
@@ -92,7 +92,7 @@ Focused on understanding **Spring Boot response handling**, exception management
 
 ---
 
-### 📅 **2nd January 2026**
+### **2nd January 2026**
 
 Worked on data handling and API enhancement.
 
@@ -109,7 +109,7 @@ Worked on data handling and API enhancement.
 
 ---
 
-### 📅 **3rd January 2026**
+### **3rd January 2026**
 
 **Pagination Implementation**
 
@@ -132,7 +132,7 @@ Worked on data handling and API enhancement.
 
 ---
 
-### 📅 **4th January 2026**
+### **4th January 2026**
 
 #### **Concepts Covered**
 
@@ -164,7 +164,7 @@ Worked on data handling and API enhancement.
 
 ---
 
-## 🧠 Key Learnings So Far
+## Key Learnings So Far
 
 * Strong understanding of **Spring Boot layered architecture**
 * Clean separation of concerns between application layers
