@@ -5,7 +5,27 @@
 * **Backend:** Spring Boot
 * **Database:** PostgreSQL
 * **API Testing:** Postman
-* **Architecture:** Layered (Controller → Service → Repository → Entity)
+* **Architecture:** Layered (Controller → Service → Repository → Entity) changing to 
+Client
+↓
+Controller
+↓ (RequestDTO)
+Service
+↓ (Entity)
+Repository
+↓
+Database
+
+
+Database
+↑
+Repository
+↑ (Entity)
+Service
+↑ (ResponseDTO)
+Controller
+↑
+Client
 
 ---
 
