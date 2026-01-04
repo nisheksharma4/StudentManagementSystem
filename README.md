@@ -1,3 +1,5 @@
+---
+
 ## 📘 Project Progress – Student Management System
 
 ## 🛠️ Tech Stack
@@ -5,27 +7,34 @@
 * **Backend:** Spring Boot
 * **Database:** PostgreSQL
 * **API Testing:** Postman
-* **Architecture:** Layered (Controller → Service → Repository → Entity) changing to 
+* **Architecture:** Layered
+  (**Controller → Service → Repository → Entity**)
+  **evolved into DTO-based layered flow**
+
+### 🔄 Updated Architecture Flow
+
+```
 Client
-↓
+  ↓
 Controller
-↓ (RequestDTO)
+  ↓  (RequestDTO)
 Service
-↓ (Entity)
+  ↓  (Entity)
 Repository
-↓
+  ↓
 Database
 
 
 Database
-↑
+  ↑
 Repository
-↑ (Entity)
+  ↑  (Entity)
 Service
-↑ (ResponseDTO)
+  ↑  (ResponseDTO)
 Controller
-↑
+  ↑
 Client
+```
 
 ---
 
@@ -99,69 +108,61 @@ Worked on data handling and API enhancement.
   * Clean and scalable API design
 
 ---
+
 ### 📅 **3rd January 2026**
 
-Pagination Implementation
+**Pagination Implementation**
 
-Implemented pagination using Spring Data JPA
+* Implemented pagination using Spring Data JPA
+* Used `Pageable` and `Page<T>` for fetching paginated student records
+* Allowed client to control:
 
-Used Pageable and Page<T> for fetching paginated student records
+  * Page number
+  * Page size
+  * Sorting (optional) — by default `Sort.unsorted()`
 
-Allowed client to control:
+**Concepts Reinforced**
 
-*Page number
+* Difference between:
 
-*Page size
+  * `Page`
+  * `Slice`
+  * `List`
+* Why pagination should be handled at repository level
 
-*Sorting (optional) ---> By default it's sort.unsorted()
-
- **Concepts Reinforced**
-
-Difference between:
-
-Page, Slice, and List
-
-Why pagination should be handled at repository level
+---
 
 ### 📅 **4th January 2026**
 
 #### **Concepts Covered**
 
-Introduced DTO (Data Transfer Object) pattern
+* Introduced **DTO (Data Transfer Object)** pattern
+* Implemented **StudentRequestDTO** and **StudentResponseDTO**
+* Understood why entities should not be exposed directly to controllers
+* Learned the importance of separating **API contract** from **database entities**
 
-Implemented StudentRequestDTO and StudentResponseDTO
+#### **Mapper Implementation**
 
-Understood why entities should not be exposed directly to controllers
+* Created a dedicated **StudentMapper** class
+* Converted:
 
-Learned the importance of separating API contract from database entities
+  * `StudentRequestDTO → Student Entity`
+  * `Student Entity → StudentResponseDTO`
+* Ensured mapping logic is centralized and reusable
 
- **Mapper Implementation**
+#### **Service Layer Responsibility**
 
-Created a dedicated StudentMapper class
+* Handled **Course–Student relationship** properly
+* Fetched `Course` entity using `courseId` in service layer
+* Passed managed `Course` entity to mapper (avoiding direct ID-to-entity mapping)
 
-Converted:
+#### **Validation Improvements**
 
-*StudentRequestDTO → Student Entity
+* Added validation annotations on **DTO layer** (`@NotNull`, `@NotBlank`, `@Email`)
+* Enabled request validation using `@Valid` in controller
+* Ensured invalid requests fail early (before hitting repository layer)
 
-*Student Entity → StudentResponseDTO
-
-Ensured mapping logic is centralized and reusable
-
- **Service Layer Responsibility**
-
-*Handled Course–Student relationship properly
-
-*Fetched Course entity using courseId in service layer
-
-Passed managed Course entity to mapper (avoiding direct ID-to-entity mapping)
-
-**Validation Improvements**
-
-*Added validation annotations on DTO layer (@NotNull, @NotBlank, @Email)
-
-*Enabled request validation using @Valid in controller
-
-*Ensured invalid requests fail early (before hitting repository layer)
+---
 
 ## 🧠 Key Learnings So Far
 
@@ -173,5 +174,3 @@ Passed managed Course entity to mapper (avoiding direct ID-to-entity mapping)
 * Hands-on experience with **PostgreSQL**, **REST APIs**, and **Postman**
 
 ---
-
-
