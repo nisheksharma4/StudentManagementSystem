@@ -33,17 +33,17 @@ Database
 
 ```
 Database
-  ^
   |
+  v
 Repository
-  ^
-  |  (Entity)
-Service
-  ^
-  |  (ResponseDTO)
-Controller
-  ^
   |
+  v  (Entity)
+Service
+  |
+  v  (ResponseDTO)
+Controller
+  |
+  v
 Client
 
 ```
