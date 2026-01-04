@@ -53,5 +53,5 @@ public class Student {
 	@Column(unique = true, nullable = true) 
 	private String email;
 	
-	//adding get fullname method for logs or 
+	 
 }

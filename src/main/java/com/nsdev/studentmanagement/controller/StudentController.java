@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,9 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nsdev.studentmanagement.dto.StudentRequestDTO;
+import com.nsdev.studentmanagement.dto.StudentResponseDTO;
 import com.nsdev.studentmanagement.model.Student;
 import com.nsdev.studentmanagement.service.StudentService;
 import com.nsdev.studentmanagement.utils.ResponseStructure;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/student")
@@ -33,14 +36,26 @@ public class StudentController {
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<ResponseStructure<Student>> saveStudent(@RequestBody Student student){
-		Student saved =  studentService.saveStudent(student);
-		ResponseStructure<Student> responseStructure = new ResponseStructure<>();
-		responseStructure.setStatus(HttpStatus.CREATED.value());
-		responseStructure.setMessage("Student Added Successfully!");
-		responseStructure.setData(saved);
-		return ResponseEntity.status(HttpStatus.CREATED).body(responseStructure);
+	public ResponseEntity<ResponseStructure<StudentResponseDTO>> saveStudent(@Valid @RequestBody StudentRequestDTO dto){
+		
+		StudentResponseDTO response = studentService.saveStudent(dto);
+		
+		ResponseStructure<StudentResponseDTO> rs = new ResponseStructure<>();
+		rs.setStatus(HttpStatus.CREATED.value());
+		rs.setMessage("Student Created Successfully");
+		rs.setData(response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(rs);
 	}
+	
+//	@PostMapping("/create")
+//	public ResponseEntity<ResponseStructure<Student>> saveStudent(@RequestBody Student student){
+//		Student saved =  studentService.saveStudent(student);
+//		ResponseStructure<Student> responseStructure = new ResponseStructure<>();
+//		responseStructure.setStatus(HttpStatus.CREATED.value());
+//		responseStructure.setMessage("Student Added Successfully!");
+//		responseStructure.setData(saved);
+//		return ResponseEntity.status(HttpStatus.CREATED).body(responseStructure);
+//	}
 //	@PostMapping("/create")
 //	public ResponseEntity<Student> saveStudent(@RequestBody Student student) {
 //	    Student saved = studentService.saveStudent(student);

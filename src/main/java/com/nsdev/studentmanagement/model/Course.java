@@ -18,7 +18,7 @@ public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, unique = true)
     private String courseName;
@@ -27,7 +27,7 @@ public class Course {
     private String description;
 
     @Column(nullable = false)
-    private int duration_in_months; 
+    private Integer duration_in_months; 
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     @JsonIgnore

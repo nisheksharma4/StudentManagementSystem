@@ -10,9 +10,13 @@ import org.springframework.data.domain.Pageable;
 
 import org.springframework.stereotype.Service;
 
+import com.nsdev.studentmanagement.dto.StudentRequestDTO;
+import com.nsdev.studentmanagement.dto.StudentResponseDTO;
 import com.nsdev.studentmanagement.exception.EntityNotFoundException;
 import com.nsdev.studentmanagement.exception.StudentAlreadyExistsException;
 import com.nsdev.studentmanagement.exception.StudentNotFoundException;
+import com.nsdev.studentmanagement.mapper.StudentMapper;
+import com.nsdev.studentmanagement.model.Course;
 import com.nsdev.studentmanagement.model.Student;
 import com.nsdev.studentmanagement.repository.CourseRepo;
 import com.nsdev.studentmanagement.repository.StudentRepo;
@@ -32,6 +36,15 @@ public class StudentService {
 	
 	public Student saveStudent(Student student) {
 		return studentRepo.save(student);
+	}
+	
+	public StudentResponseDTO saveStudent(StudentRequestDTO dto) {
+		Course course = courseRepo.findById(dto.getCourseId()).orElseThrow(() -> new StudentNotFoundException("Course Not Found"));
+		
+		Student student = StudentMapper.toEntity(dto, course);
+		Student save = studentRepo.save(student);
+		return StudentMapper.toResponseDTO(save);
+		
 	}
 	
 	public Student getStudentById(int id) {
