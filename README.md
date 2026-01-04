@@ -1,4 +1,3 @@
----
 
 ## Project Progress – Student Management System
 
@@ -13,7 +12,7 @@
 
 ### Updated Architecture Flow
 
-```
+
 Client
   |
   v
@@ -41,7 +40,7 @@ Service
 Controller
   ^
 Client
-```
+
 
 ---
 
