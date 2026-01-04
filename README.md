@@ -89,13 +89,13 @@ Used Pageable and Page<T> for fetching paginated student records
 
 Allowed client to control:
 
-Page number
+*Page number
 
-Page size
+*Page size
 
-Sorting (optional) ---> By default it's sort.unsorted()
+*Sorting (optional) ---> By default it's sort.unsorted()
 
-🔹 Concepts Reinforced
+ **Concepts Reinforced**
 
 Difference between:
 
@@ -121,27 +121,27 @@ Created a dedicated StudentMapper class
 
 Converted:
 
-StudentRequestDTO → Student Entity
+*StudentRequestDTO → Student Entity
 
-Student Entity → StudentResponseDTO
+*Student Entity → StudentResponseDTO
 
 Ensured mapping logic is centralized and reusable
 
  **Service Layer Responsibility**
 
-Handled Course–Student relationship properly
+*Handled Course–Student relationship properly
 
-Fetched Course entity using courseId in service layer
+*Fetched Course entity using courseId in service layer
 
 Passed managed Course entity to mapper (avoiding direct ID-to-entity mapping)
 
 **Validation Improvements**
 
-Added validation annotations on DTO layer (@NotNull, @NotBlank, @Email)
+*Added validation annotations on DTO layer (@NotNull, @NotBlank, @Email)
 
-Enabled request validation using @Valid in controller
+*Enabled request validation using @Valid in controller
 
-Ensured invalid requests fail early (before hitting repository layer)
+*Ensured invalid requests fail early (before hitting repository layer)
 
 ## 🧠 Key Learnings So Far
 
