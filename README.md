@@ -36,13 +36,14 @@ Database
   ^
   |
 Repository
+  ^
   |  (Entity)
-  ^
 Service
-  |  (ResponseDTO)
   ^
+  |  (ResponseDTO)
 Controller
   ^
+  |
 Client
 
 ```
