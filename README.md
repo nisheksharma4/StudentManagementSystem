@@ -79,6 +79,69 @@ Worked on data handling and API enhancement.
   * Clean and scalable API design
 
 ---
+### 📅 **3rd January 2026**
+
+Pagination Implementation
+
+Implemented pagination using Spring Data JPA
+
+Used Pageable and Page<T> for fetching paginated student records
+
+Allowed client to control:
+
+Page number
+
+Page size
+
+Sorting (optional) ---> By default it's sort.unsorted()
+
+🔹 Concepts Reinforced
+
+Difference between:
+
+Page, Slice, and List
+
+Why pagination should be handled at repository level
+
+### 📅 **4th January 2026**
+
+#### **Concepts Covered**
+
+Introduced DTO (Data Transfer Object) pattern
+
+Implemented StudentRequestDTO and StudentResponseDTO
+
+Understood why entities should not be exposed directly to controllers
+
+Learned the importance of separating API contract from database entities
+
+ **Mapper Implementation**
+
+Created a dedicated StudentMapper class
+
+Converted:
+
+StudentRequestDTO → Student Entity
+
+Student Entity → StudentResponseDTO
+
+Ensured mapping logic is centralized and reusable
+
+ **Service Layer Responsibility**
+
+Handled Course–Student relationship properly
+
+Fetched Course entity using courseId in service layer
+
+Passed managed Course entity to mapper (avoiding direct ID-to-entity mapping)
+
+**Validation Improvements**
+
+Added validation annotations on DTO layer (@NotNull, @NotBlank, @Email)
+
+Enabled request validation using @Valid in controller
+
+Ensured invalid requests fail early (before hitting repository layer)
 
 ## 🧠 Key Learnings So Far
 
