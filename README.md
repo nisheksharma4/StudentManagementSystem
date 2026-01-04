@@ -12,7 +12,9 @@
 
 ### Updated Architecture Flow
 
+#### Request Flow
 
+```
 Client
   |
   v
@@ -26,8 +28,10 @@ Repository
   |
   v
 Database
+```
+#### Response Flow
 
-
+```
 Database
   ^
   |
@@ -41,6 +45,7 @@ Controller
   ^
 Client
 
+```
 
 ---
 
