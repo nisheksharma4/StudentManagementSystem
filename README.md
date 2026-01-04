@@ -15,24 +15,31 @@
 
 ```
 Client
-  ↓
+  |
+  v
 Controller
-  ↓  (RequestDTO)
+  |  (RequestDTO)
+  v
 Service
-  ↓  (Entity)
+  |  (Entity)
+  v
 Repository
-  ↓
+  |
+  v
 Database
 
 
 Database
-  ↑
+  ^
+  |
 Repository
-  ↑  (Entity)
+  |  (Entity)
+  ^
 Service
-  ↑  (ResponseDTO)
+  |  (ResponseDTO)
+  ^
 Controller
-  ↑
+  ^
 Client
 ```
 
