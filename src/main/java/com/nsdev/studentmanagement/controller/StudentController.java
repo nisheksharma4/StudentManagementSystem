@@ -31,7 +31,7 @@ import jakarta.validation.Valid;
 public class StudentController {
 	
 	private StudentService studentService;
-	
+		
 	
 	public StudentController(StudentService studentService) {
 		this.studentService = studentService;
@@ -134,6 +134,7 @@ public class StudentController {
 		return ResponseEntity.ok(rs);
 	}
 	
+	//Fetched all student from database using DTO Mapper and Pagination
 	@GetMapping("/page")
 	public ResponseEntity<ResponseStructure<PageResponseDTO<StudentResponseDTO>>> getAllStudent(@RequestParam int page, @RequestParam int size) {
 		Page<StudentResponseDTO> allStudent = studentService.getAllStudent(page, size);
@@ -155,19 +156,18 @@ public class StudentController {
 	}
 	
 	@GetMapping("/page-sort")
-	public ResponseEntity<ResponseStructure<Page<Student>>> getStudentsWithPaginationAndSorting(
+	public ResponseEntity<ResponseStructure<Page<StudentResponseDTO>>> getStudentsWithPaginationAndSorting(
 	        @RequestParam int page,
 	        @RequestParam int size,
 	        @RequestParam String sortBy,
-	        @RequestParam String direction) {
+	        @RequestParam String direction) {	    
+	            Page<StudentResponseDTO> studentsWithPaginationAndSorting = studentService.getStudentsWithPaginationAndSorting(page, size, sortBy, direction);
+	            
 
-	    Page<Student> students =
-	            studentService.getStudentsWithPaginationAndSorting(page, size, sortBy, direction);
-
-	    ResponseStructure<Page<Student>> rs = new ResponseStructure<>();
+	    ResponseStructure<Page<StudentResponseDTO>> rs = new ResponseStructure<>();
 	    rs.setStatus(HttpStatus.OK.value());
 	    rs.setMessage("Students fetched with pagination and sorting");
-	    rs.setData(students);
+	    rs.setData(studentsWithPaginationAndSorting);
 
 	    return ResponseEntity.ok(rs);
 	}

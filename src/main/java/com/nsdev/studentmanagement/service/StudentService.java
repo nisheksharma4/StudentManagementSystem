@@ -130,12 +130,15 @@ public class StudentService {
 		 return allStudents.map(student -> StudentMapper.toResponseDTO(student));
 	}
 	
-	public Page<Student> getStudentsWithPaginationAndSorting(int page, int size, String sortBy, String direction) {
-	    Sort sort = direction.equalsIgnoreCase("desc")
+	//Pagination with sorting { sortBy = ["firstName","lastName","Age", "contact",etc] and direction = ascending or descending }
+	public Page<StudentResponseDTO> getStudentsWithPaginationAndSorting(int page, int size, String sortBy, String direction) {
+	    
+		Sort sort = direction.equalsIgnoreCase("desc")
 	            ? Sort.by(sortBy).descending()
 	            : Sort.by(sortBy).ascending();
 	    Pageable pageable = PageRequest.of(page, size, sort);
-	    return studentRepo.findAll(pageable);
+	     Page<Student> allStudent = studentRepo.findAll(pageable);
+	     return allStudent.map(student -> StudentMapper.toResponseDTO(student));
 	}
 	
 	public List<Student> getStudentByCourseId(int id){
