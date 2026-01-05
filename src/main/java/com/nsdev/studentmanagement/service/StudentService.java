@@ -40,6 +40,9 @@ public class StudentService {
 	}
 	
 	public StudentResponseDTO saveStudent(StudentRequestDTO dto) {
+		if (studentRepo.existsByEmail(dto.getEmail())) {
+	        throw new StudentAlreadyExistsException("Student with email " + dto.getEmail() + " already exists");
+	    }
 		Course course = courseRepo.findById(dto.getCourseId())
 				.orElseThrow(() -> new StudentNotFoundException("Course Not Found"));
 		
