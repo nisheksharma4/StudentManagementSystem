@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 import org.springframework.stereotype.Service;
 
+import com.nsdev.studentmanagement.dto.PageResponseDTO;
 import com.nsdev.studentmanagement.dto.StudentRequestDTO;
 import com.nsdev.studentmanagement.dto.StudentResponseDTO;
 import com.nsdev.studentmanagement.exception.EntityNotFoundException;
@@ -141,18 +142,31 @@ public class StudentService {
 	     return allStudent.map(student -> StudentMapper.toResponseDTO(student));
 	}
 	
-	public List<Student> getStudentByCourseId(int id){
-		return studentRepo.findByCourseId(id);
+	public List<StudentResponseDTO> getStudentByCourseId(int id){
+		List<Student> byCourseId = studentRepo.findByCourseId(id);
+		return StudentMapper.toResponseDTOList(byCourseId);
 	}
 	
-	public Page<Student> getStudentsByCourseId(int courseId, int page, int size) {
+	public PageResponseDTO<StudentResponseDTO> getStudentsByCourseId(int courseId, int page, int size) {
 		
 	    
 	    if (!courseRepo.existsById(courseId)) {
 	        throw new EntityNotFoundException("Course ID " + courseId + " not found");
 	    }
 	    PageRequest pr = PageRequest.of(page, size);
-	    return studentRepo.findByCourseId(courseId, pr);
+	    
+	     Page<Student> studentPage = studentRepo.findByCourseId(courseId, pr);
+	     
+	     Page<StudentResponseDTO> dtoPage = studentPage.map(StudentMapper::toResponseDTO);
+	     
+	     PageResponseDTO<StudentResponseDTO> response = new PageResponseDTO<>();
+	     response.setContent(dtoPage.getContent());
+	     response.setPageNumber(dtoPage.getNumber());
+	     response.setPageSize(dtoPage.getSize());
+	     response.setTotalElements(dtoPage.getTotalElements());
+	     response.setTotalPages(dtoPage.getTotalPages());
+	     response.setLast(dtoPage.isLast());
+	     return response;
 	}
 
 

@@ -172,11 +172,12 @@ public class StudentController {
 	    return ResponseEntity.ok(rs);
 	}
 	
+	//Student with Particular Course ID will be fetched not paginated
 	@GetMapping("/courseid/{courseid}")
-	public ResponseEntity<ResponseStructure<List<Student>>> getStudentsByCourseId(@PathVariable int courseid) {
-		List<Student> studentByCourseId = studentService.getStudentByCourseId(courseid);
-		String courseName = studentByCourseId.get(0).getCourse().getCourseName();
-		ResponseStructure<List<Student>> rs = new ResponseStructure<>();
+	public ResponseEntity<ResponseStructure<List<StudentResponseDTO>>> getStudentsByCourseId(@PathVariable int courseid) {
+		List<StudentResponseDTO> studentByCourseId = studentService.getStudentByCourseId(courseid);
+		String courseName = studentByCourseId.get(0).getCourseName();
+		ResponseStructure<List<StudentResponseDTO>> rs = new ResponseStructure<>();
 		rs.setStatus(HttpStatus.OK.value());
 		rs.setMessage("Student with course id and course name :- "+courseid+" : " +courseName+ " found.");
 		rs.setData(studentByCourseId);
@@ -185,11 +186,11 @@ public class StudentController {
 	}
 	
 	@GetMapping("/courseIdPage/{courseid}")
-	public ResponseEntity<ResponseStructure<Page<Student>>> getStudentByCourseIdAndPag(@PathVariable int courseid, @RequestParam int page, @RequestParam int size) {
+	public ResponseEntity<ResponseStructure<PageResponseDTO<StudentResponseDTO>>> getStudentByCourseIdAndPage(@PathVariable int courseid, @RequestParam int page, @RequestParam int size) {
 		
-		Page<Student> students = studentService.getStudentsByCourseId(courseid, page, size);
+		PageResponseDTO<StudentResponseDTO> students = studentService.getStudentsByCourseId(courseid, page, size);
 		
-		ResponseStructure<Page<Student>> rs = new ResponseStructure<>();
+		ResponseStructure<PageResponseDTO<StudentResponseDTO>> rs = new ResponseStructure<>();
 		rs.setStatus(HttpStatus.OK.value());
 		rs.setMessage("Student found in page with courseid: "+courseid);
 		rs.setData(students);
