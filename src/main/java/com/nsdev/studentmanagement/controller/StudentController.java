@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nsdev.studentmanagement.dto.PageResponseDTO;
 import com.nsdev.studentmanagement.dto.StudentRequestDTO;
 import com.nsdev.studentmanagement.dto.StudentResponseDTO;
 import com.nsdev.studentmanagement.model.Student;
@@ -30,6 +31,7 @@ import jakarta.validation.Valid;
 public class StudentController {
 	
 	private StudentService studentService;
+	
 	
 	public StudentController(StudentService studentService) {
 		this.studentService = studentService;
@@ -63,30 +65,32 @@ public class StudentController {
 //	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<ResponseStructure<Student>> getStudentById(@PathVariable int id) {
-		Student studentById = studentService.getStudentById(id);
-		ResponseStructure<Student> rs = new ResponseStructure<>();
+	public ResponseEntity<ResponseStructure<StudentResponseDTO>> getStudentById(@PathVariable int id) {
+		StudentResponseDTO responseDTO = studentService.getStudentById(id);
+		ResponseStructure<StudentResponseDTO> rs = new ResponseStructure<>();
 		rs.setStatus(HttpStatus.OK.value());
 		rs.setMessage("Student With Id : "+id+" Found.");
-		rs.setData(studentById);
+		rs.setData(responseDTO);
 		return ResponseEntity.status(HttpStatus.OK).body(rs);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<ResponseStructure<Student>> updateStudent(@PathVariable int id, @RequestBody Student student) {
-		Student updateStudent = studentService.updateStudent(id, student);
-		ResponseStructure<Student> rs = new ResponseStructure<>();
+	public ResponseEntity<ResponseStructure<StudentResponseDTO>> updateStudent(@PathVariable int id, @RequestBody StudentRequestDTO dto) {
+		
+		StudentResponseDTO responseDTO = studentService.updateStudent(id, dto);
+		
+		ResponseStructure<StudentResponseDTO> rs = new ResponseStructure<>();
 		rs.setStatus(HttpStatus.OK.value());
 		rs.setMessage("Student With id : "+id+" updated Succesfully.");
-		rs.setData(updateStudent);
+		rs.setData(responseDTO);
 		return ResponseEntity.status(HttpStatus.OK).body(rs);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<ResponseStructure<Student>> deleteStudent(@PathVariable int id) {
+	public ResponseEntity<ResponseStructure<Void>> deleteStudent(@PathVariable int id) {
 		studentService.deleteStudent(id);
 		
-		ResponseStructure<Student> rs = new ResponseStructure<>();
+		ResponseStructure<Void> rs = new ResponseStructure<>();
 		rs.setStatus(HttpStatus.OK.value());
 		rs.setMessage("Student With Id : "+id+" deleted Successfully.");
 		rs.setData(null);
@@ -105,36 +109,47 @@ public class StudentController {
 		return ResponseEntity.ok(updateStudentEmail);
 	}
 	
+	
+	// Find Student by using his/her Id and Last Name
 	@GetMapping
-	public ResponseEntity<ResponseStructure<Student>> studentById(@RequestParam int id, @RequestParam String lastname) {
-		Student studentById = studentService.getStudentByIdAndLastName(id, lastname);
-		ResponseStructure<Student> rs = new ResponseStructure<>();
+	public ResponseEntity<ResponseStructure<StudentResponseDTO>> studentById(@RequestParam int id, @RequestParam String lastName) {
+		StudentResponseDTO response = studentService.getStudentByIdAndLastName(id, lastName);
+		ResponseStructure<StudentResponseDTO> rs = new ResponseStructure<>();
 		rs.setStatus(HttpStatus.OK.value());
-		rs.setMessage("Student with id "+id+" and lastname "+lastname+" found.");
-		rs.setData(studentById);
+		rs.setMessage("Student with id "+id+" and lastname "+lastName+" found.");
+		rs.setData(response);
 		return ResponseEntity.status(HttpStatus.OK).body(rs);
 	}
 	
+	//Find Student by using his/her lastName
 	@GetMapping("/lname")
-	public ResponseEntity<ResponseStructure<List<Student>>> getStudentByLastName(@RequestParam String lastName) {
-		List<Student> students= studentService.getStudentByLastName(lastName);
+	public ResponseEntity<ResponseStructure<List<StudentResponseDTO>>> getStudentByLastName(@RequestParam String lastName) {
+		// Receives list of student response DTOs filtered by last name 
+		List<StudentResponseDTO> response = studentService.getStudentByLastName(lastName);
 		
-		ResponseStructure<List<Student>> rs = new ResponseStructure<>();
+		ResponseStructure<List<StudentResponseDTO>> rs = new ResponseStructure<>();
 		rs.setStatus(HttpStatus.OK.value());
-		rs.setMessage(students.size()+" student records found with "+lastName+".");
-		rs.setData(students);
+		rs.setMessage(response.size()+" student records found with "+lastName+".");
+		rs.setData(response);
 		return ResponseEntity.ok(rs);
 	}
 	
 	@GetMapping("/page")
-	public ResponseEntity<ResponseStructure<List<Student>>> getAllStudent(@RequestParam int page, @RequestParam int size) {
-		Page<Student> allStudent = studentService.getAllStudent(page, size);
-		List<Student> ls = allStudent.getContent();
+	public ResponseEntity<ResponseStructure<PageResponseDTO<StudentResponseDTO>>> getAllStudent(@RequestParam int page, @RequestParam int size) {
+		Page<StudentResponseDTO> allStudent = studentService.getAllStudent(page, size);
 		
-		ResponseStructure<List<Student>> rs = new ResponseStructure<>();
+		PageResponseDTO<StudentResponseDTO> pageResponseDto = new PageResponseDTO<>();
+		pageResponseDto.setContent(allStudent.getContent());
+		pageResponseDto.setPageNumber(allStudent.getNumber());
+		pageResponseDto.setPageSize(allStudent.getSize());
+		pageResponseDto.setTotalElements(allStudent.getTotalElements());
+		pageResponseDto.setTotalPages(allStudent.getTotalPages());
+		pageResponseDto.setLast(allStudent.isLast());
+		
+		ResponseStructure<PageResponseDTO<StudentResponseDTO>> rs = new ResponseStructure<>();
 		rs.setStatus(HttpStatus.OK.value());
-		rs.setMessage("Student fetch Successfully");
-		rs.setData(ls);
+		rs.setMessage(allStudent.getTotalElements()+" Student fetched Successfully");
+		rs.setData(pageResponseDto);
 		
 		return ResponseEntity.ok(rs);
 	}

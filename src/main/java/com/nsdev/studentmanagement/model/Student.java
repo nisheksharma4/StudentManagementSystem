@@ -29,10 +29,6 @@ public class Student {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "course_id")
-	private Course course;
-
 	@NotBlank(message = "First Name is required")
 	@Size(min = 2, max = 50, message = "Name must be 2-50 characters")
 	@Column(name = "first_name", nullable = false)
@@ -52,6 +48,10 @@ public class Student {
 	@Email
 	@Column(unique = true, nullable = true) 
 	private String email;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "course_id")
+	private Course course;
 	
 	 
 }

@@ -1,5 +1,7 @@
 package com.nsdev.studentmanagement.mapper;
 
+import java.util.List;
+
 import com.nsdev.studentmanagement.dto.StudentRequestDTO;
 import com.nsdev.studentmanagement.dto.StudentResponseDTO;
 import com.nsdev.studentmanagement.model.Course;
@@ -27,7 +29,16 @@ public class StudentMapper {
 		dto.setAge(student.getAge());
 		dto.setEmail(student.getEmail());
 		dto.setContact(student.getContact());
+		// student.getCourse() returns course entity, so we extract only the getName()
+		//to match the string field CourseName in the StudentResponseDTO
 		dto.setCourseName(student.getCourse().getCourseName());
 		return dto;
 	}
+	
+	public static List<StudentResponseDTO> toResponseDTOList(List<Student> students) {
+	    return students.stream()
+	    		.map(student -> StudentMapper.toResponseDTO(student))
+	    		.toList();
+	}
+
 }

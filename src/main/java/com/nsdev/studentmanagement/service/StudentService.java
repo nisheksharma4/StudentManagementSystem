@@ -39,7 +39,8 @@ public class StudentService {
 	}
 	
 	public StudentResponseDTO saveStudent(StudentRequestDTO dto) {
-		Course course = courseRepo.findById(dto.getCourseId()).orElseThrow(() -> new StudentNotFoundException("Course Not Found"));
+		Course course = courseRepo.findById(dto.getCourseId())
+				.orElseThrow(() -> new StudentNotFoundException("Course Not Found"));
 		
 		Student student = StudentMapper.toEntity(dto, course);
 		Student save = studentRepo.save(student);
@@ -47,25 +48,35 @@ public class StudentService {
 		
 	}
 	
-	public Student getStudentById(int id) {
+	public StudentResponseDTO getStudentById(int id) {
 		
-		 Optional<Student> optional = studentRepo.findById(id);
-		 if(optional.isPresent()) {
-			 return optional.get();
-		 }else {
-			 throw new StudentNotFoundException("Student with Id : "+id + " Not Found!");
-		 }
+	Student student = studentRepo.findById(id)
+			.orElseThrow(() -> new StudentNotFoundException("Student with id :"+id+" not found."));
+	
+	StudentResponseDTO responseDTO = StudentMapper.toResponseDTO(student);
+	return responseDTO;
+		 
 	}
 	
-	public Student updateStudent(int id, Student student) {
-		Optional<Student> optional = studentRepo.findById(id);
-		if(optional.isPresent()) {
-			student.setId(id);
-			return studentRepo.save(student);
-			
-		}else {
-			throw new StudentNotFoundException("Student Not Found!!");
+	public StudentResponseDTO updateStudent(int id, StudentRequestDTO dto) {
+		//By using Id I found Existing Student...
+		Student student1 = studentRepo.findById(id)
+				.orElseThrow(() -> new StudentNotFoundException("Student with id : "+id+" not found."));
+		//Update data by using setter
+		student1.setFirstName(dto.getFirstName());
+		student1.setLastName(dto.getLastName());
+		student1.setContact(dto.getContact());
+		student1.setAge(dto.getAge());
+		student1.setEmail(dto.getEmail());
+		
+		//handle course
+		if(dto.getCourseId() != null) {
+			//Fetching the Course by using course Id.
+			Course course = courseRepo.findById(dto.getCourseId()).orElseThrow(() -> new StudentNotFoundException("Course with id : "+dto.getCourseId()+" not found."));
+			student1.setCourse(course);
 		}
+		Student saved = studentRepo.save(student1);
+		return StudentMapper.toResponseDTO(saved);
 	}
 	
 //	public void deleteStudent(int id) {
@@ -99,24 +110,24 @@ public class StudentService {
 		return studentRepo.save(student);
 	}
 	
-	public Student getStudentByIdAndLastName(int id, String lastName) {
-		return studentRepo.findByIdAndLastName(id, lastName)
+	public StudentResponseDTO getStudentByIdAndLastName(int id, String lastName) {
+		 Student student = studentRepo.findByIdAndLastName(id, lastName)
 				.orElseThrow(() -> new StudentNotFoundException("Student with id "+id+ " and lastname "+lastName+" not found."));
+		 return StudentMapper.toResponseDTO(student);
 	}
 	
-	public List<Student> getStudentByLastName(String lastName) {
+	public List<StudentResponseDTO> getStudentByLastName(String lastName) {
+		//Fetch Students by lastname from Database
 		 List<Student> students = studentRepo.findByLastName(lastName);
-		 
-		 if(students.isEmpty()) {
-			 throw new StudentNotFoundException("Student with Last Name "+lastName+" not found!");
-		 }
-		 
-		 return students;
+		 //convert Entity List to response DTO list
+		 return StudentMapper.toResponseDTOList(students);
 	}
 	
-	public Page<Student> getAllStudent(int page, int size) {
+	//Fetch All Student
+	public Page<StudentResponseDTO> getAllStudent(int page, int size) {
 		PageRequest pageRequest = PageRequest.of(page, size);
-		return studentRepo.findAll(pageRequest);
+		 Page<Student> allStudents = studentRepo.findAll(pageRequest);
+		 return allStudents.map(student -> StudentMapper.toResponseDTO(student));
 	}
 	
 	public Page<Student> getStudentsWithPaginationAndSorting(int page, int size, String sortBy, String direction) {
