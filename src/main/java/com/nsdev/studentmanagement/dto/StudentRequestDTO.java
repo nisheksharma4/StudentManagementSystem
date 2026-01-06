@@ -9,22 +9,22 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StudentRequestDTO {
-	
-	@NotBlank 
+
+	@NotBlank
 	private String firstName;
-	
+
 	@NotBlank
 	private String lastName;
-	
+
 	@NotNull
 	private Integer age;
-	
+
 	@Email
 	@NotBlank
 	private String email;
-	
+
 	private Long contact;
-	
+
 	@NotNull
 	private Integer courseId;
 }

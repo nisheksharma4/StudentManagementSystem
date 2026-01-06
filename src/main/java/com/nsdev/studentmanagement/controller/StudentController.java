@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nsdev.studentmanagement.dto.PageResponseDTO;
+import com.nsdev.studentmanagement.dto.StudentEmailUpdateDTO;
 import com.nsdev.studentmanagement.dto.StudentRequestDTO;
 import com.nsdev.studentmanagement.dto.StudentResponseDTO;
 import com.nsdev.studentmanagement.model.Student;
@@ -38,7 +39,8 @@ public class StudentController {
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<ResponseStructure<StudentResponseDTO>> saveStudent(@Valid @RequestBody StudentRequestDTO dto){
+	public ResponseEntity<ResponseStructure<StudentResponseDTO>> saveStudent(
+			@Valid @RequestBody StudentRequestDTO dto){
 		
 		StudentResponseDTO response = studentService.saveStudent(dto);
 		
@@ -100,15 +102,15 @@ public class StudentController {
 	}
 	
 	@PatchMapping("/{id}/email")
-	public ResponseEntity<Student> updateStudentEmail(@PathVariable int id, @RequestBody Map<String, String> body) throws IllegalAccessException {
-		String email = body.get("email");
-		if(email == null || email.isEmpty()) {
-			throw new IllegalAccessException("Email is required");
-		}
-		Student updateStudentEmail = studentService.updateStudentEmail(id, email);
-		return ResponseEntity.ok(updateStudentEmail);
-	}
-	
+	public ResponseEntity<ResponseStructure<StudentResponseDTO>> updateStudentEmail(@PathVariable int id, @RequestBody StudentEmailUpdateDTO dto) {	
+		
+		StudentResponseDTO updateStudentEmail = studentService.updateStudentEmail(id, dto.getEmail());
+		ResponseStructure<StudentResponseDTO> rs = new ResponseStructure<>();
+		rs.setStatus(HttpStatus.OK.value());
+		rs.setMessage("Student with id : "+id+" updated Email.");
+		rs.setData(updateStudentEmail);
+		return ResponseEntity.status(HttpStatus.OK).body(rs);
+	}	
 	
 	// Find Student by using his/her Id and Last Name
 	@GetMapping

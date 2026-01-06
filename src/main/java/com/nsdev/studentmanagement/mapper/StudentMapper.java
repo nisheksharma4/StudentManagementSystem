@@ -8,8 +8,8 @@ import com.nsdev.studentmanagement.model.Course;
 import com.nsdev.studentmanagement.model.Student;
 
 public class StudentMapper {
-	
-	//RequestDTO -> Entity
+
+	// RequestDTO -> Entity
 	public static Student toEntity(StudentRequestDTO dto, Course course) {
 		Student student = new Student();
 		student.setFirstName(dto.getFirstName());
@@ -20,25 +20,23 @@ public class StudentMapper {
 		student.setCourse(course);
 		return student;
 	}
-	
-	//Entity -> ResponseDTO
+
+	// Entity -> ResponseDTO
 	public static StudentResponseDTO toResponseDTO(Student student) {
 		StudentResponseDTO dto = new StudentResponseDTO();
 		dto.setId(student.getId());
-		dto.setName(student.getFirstName() + " "+student.getLastName());
+		dto.setName(student.getFirstName() + " " + student.getLastName());
 		dto.setAge(student.getAge());
 		dto.setEmail(student.getEmail());
 		dto.setContact(student.getContact());
 		// student.getCourse() returns course entity, so we extract only the getName()
-		//to match the string field CourseName in the StudentResponseDTO
+		// to match the string field CourseName in the StudentResponseDTO
 		dto.setCourseName(student.getCourse().getCourseName());
 		return dto;
 	}
-	
+
 	public static List<StudentResponseDTO> toResponseDTOList(List<Student> students) {
-	    return students.stream()
-	    		.map(student -> StudentMapper.toResponseDTO(student))
-	    		.toList();
+		return students.stream().map(student -> StudentMapper.toResponseDTO(student)).toList();
 	}
 
 }

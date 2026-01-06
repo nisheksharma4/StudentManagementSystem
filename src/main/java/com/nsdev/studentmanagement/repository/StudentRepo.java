@@ -1,6 +1,5 @@
 package com.nsdev.studentmanagement.repository;
 
-
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -10,23 +9,20 @@ import org.springframework.data.repository.query.Param;
 
 import com.nsdev.studentmanagement.model.Student;
 
-
 import java.util.List;
 
 public interface StudentRepo extends JpaRepository<Student, Integer> {
-	
+
 	boolean existsByEmail(String email);
-	
+
 	Optional<Student> findByIdAndLastName(int id, String lastName);
-	
-	 List<Student> findByLastName(String lastName);
-	 
-	 //pagination
-	 Page<Student> findAll(Pageable pageable);
-	 
-	 
-	 List<Student> findByCourseId(int courseid);
-	 
-	 
-	 Page<Student> findByCourseId(@Param("courseid") int courseId, Pageable pageable);
+
+	List<Student> findByLastName(String lastName);
+
+	// pagination
+	Page<Student> findAll(Pageable pageable);
+
+	List<Student> findByCourseId(int courseid);
+
+	Page<Student> findByCourseId(@Param("courseid") int courseId, Pageable pageable);
 }

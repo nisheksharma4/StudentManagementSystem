@@ -7,9 +7,9 @@ import lombok.Setter;
 @Setter
 public class StudentResponseDTO {
 	
-	private int id;
+	private Integer id;
 	private String name;
-	private int age;
+	private Integer age;
 	private String email;
 	private Long contact;
 	private String courseName;

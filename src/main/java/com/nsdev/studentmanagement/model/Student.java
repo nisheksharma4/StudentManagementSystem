@@ -47,6 +47,7 @@ public class Student {
 	
 	@Email
 	@Column(unique = true, nullable = true) 
+	@NotBlank
 	private String email;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
