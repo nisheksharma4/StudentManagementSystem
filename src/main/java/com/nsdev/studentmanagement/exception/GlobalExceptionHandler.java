@@ -5,13 +5,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.nsdev.studentmanagement.model.Student;
 import com.nsdev.studentmanagement.utils.ResponseStructure;
 
 @ControllerAdvice
 @RestController
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 
 	@ExceptionHandler(StudentNotFoundException.class)
 	public ResponseEntity<ResponseStructure<Student>> handleStudentNotFound(StudentNotFoundException ex) {
@@ -56,5 +58,14 @@ public class GlobalExceptionHandler {
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(rs);
 	}
+	
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ResponseStructure<String>> handlePathVariableError(MethodArgumentTypeMismatchException ex) {
+        ResponseStructure<String> rs = new ResponseStructure<>();
+        rs.setStatus(HttpStatus.BAD_REQUEST.value());
+        rs.setMessage("Invalid request: path variable or parameter missing/incorrect");
+        rs.setData(null);
+        return new ResponseEntity<>(rs, HttpStatus.BAD_REQUEST);
+    }
 
 }
